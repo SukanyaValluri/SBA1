@@ -2,10 +2,17 @@ package com.iiht.evaluation.eloan.model;
 
 public class User {
 	
+	private String userid;
 	private String username;
 	private String password;
 	public User() {
 		
+	}
+	public String getUserid() {
+		return userid;
+	}
+	public void setUserid(String userid) {
+		this.userid = userid;
 	}
 	public String getUsername() {
 		return username;
@@ -19,10 +26,11 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public User(String username, String password) {
+	public User(String username, String password, String userid) {
 		super();
 		this.username = username;
 		this.password = password;
+		this.userid = userid;
 	}
 	
 

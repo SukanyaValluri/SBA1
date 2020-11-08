@@ -1,6 +1,6 @@
 package com.iiht.evaluation.eloan.model;
 
-public class LoanInfo {
+public class LoanInfoDisplay {
 	private String ApplicationNumber;
 	 private   String LoanName;
 	 private   String LoanAmount;
@@ -19,7 +19,7 @@ public class LoanInfo {
 		LoanNumber = loanNumber;
 	}
 	// private static String status;
-	 public LoanInfo() 
+	 public LoanInfoDisplay() 
 	 {
 		 
 	 }
@@ -84,7 +84,7 @@ public class LoanInfo {
 		Email = email;
 	}
 	 
-	public LoanInfo(String ApplicationNumber, String LoanName, String LoanAmount,String ApplicationDate, 
+	public LoanInfoDisplay(String ApplicationNumber, String LoanName, String LoanAmount,String ApplicationDate, 
 			String BusinessStructure, String BillingIndicator, String TaxPayer, String ContactAddress, String ContactNumber, String Email, String LoanNumber) {
 		super();
 		this.ApplicationNumber = ApplicationNumber;

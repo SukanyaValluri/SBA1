@@ -21,6 +21,7 @@ import com.iiht.evaluation.eloan.dao.ConnectionDao;
 import com.iiht.evaluation.eloan.dto.LoanDto;
 import com.iiht.evaluation.eloan.model.ApprovedLoan;
 import com.iiht.evaluation.eloan.model.LoanInfo;
+import com.iiht.evaluation.eloan.model.LoanInfoDisplay;
 
 
 @WebServlet("/admin")
@@ -101,10 +102,26 @@ public class AdminController extends HttpServlet {
 		return null;
 	}
 
-	private String listall(HttpServletRequest request, HttpServletResponse response) throws SQLException {
+	private String listall(HttpServletRequest request, HttpServletResponse response) throws SQLException, ClassNotFoundException {
 	/* write the code to display all the loans */
 		
-		return null;
+try {
+			
+			List<LoanInfoDisplay> loandetails = this.connDao.getLoanRecords();
+					// put data into request object (to share with view page)
+					request.setAttribute("LoanDetails", loandetails);
+					return null;
+				
+			} catch (ClassNotFoundException e) {
+				// TODO: handle exception
+				throw new ClassNotFoundException(e.getMessage());
+			} catch (SQLException e) {
+				// TODO: handle exception
+				throw new SQLException(e.getMessage());
+			}
+	
+		
+		
 	}
 
 	

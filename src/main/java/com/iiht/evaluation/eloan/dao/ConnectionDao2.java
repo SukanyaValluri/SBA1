@@ -12,7 +12,7 @@ import java.util.List;
 import com.iiht.evaluation.eloan.model.LoanInfo;
 import com.iiht.evaluation.eloan.model.LoanInfoDisplay;
 
-public class ConnectionDao<UserDetails> {
+public class ConnectionDao2<AdminDetails> {
 	@SuppressWarnings("unused")
 	private static final long serialVersionUID = 1L;
 	private String jdbcURL;
@@ -20,7 +20,7 @@ public class ConnectionDao<UserDetails> {
 	private String jdbcPassword;
 	private Connection jdbcConnection;
 
-	public ConnectionDao(String jdbcURL, String jdbcUsername, String jdbcPassword) {
+	public ConnectionDao2(String jdbcURL, String jdbcUsername, String jdbcPassword) {
         this.jdbcURL = jdbcURL;
         this.jdbcUsername = jdbcUsername;
         this.jdbcPassword = jdbcPassword;
@@ -44,47 +44,6 @@ public class ConnectionDao<UserDetails> {
 		}
 	}
 	
-	public void addLoan( String ApplicationNumber, String LoanName,String LoanAmount, String ApplicationDate, 
-			String BusinessStructure, String BillingIndicator, String ContactAddress, String Email,String ContactNumber,  String LoanNumber, String TaxPayer) throws SQLException,ClassNotFoundException {
-		String sql = "insert into sukanya.loaninfo values(?,?,?,str_to_date(?,'%m-%d-%Y'),?,?,?,?,?,?,?)";
-		this.connect(); 
-		PreparedStatement pstmt = this.jdbcConnection.prepareStatement(sql);
-		//id will be auto-increment in database
-		//str_to_date('07-25-2012','%m-%d-%Y')
-
-		pstmt.setString(1, ApplicationNumber);
-		pstmt.setString(2, LoanName);
-		pstmt.setString(3, LoanAmount);		
-		pstmt.setString(4, ApplicationDate);		
-		pstmt.setString(5, BusinessStructure);		
-		pstmt.setString(6, BillingIndicator);		
-		pstmt.setString(7, ContactAddress);	
-		pstmt.setString(8, Email);
-		pstmt.setString(9, ContactNumber);				
-		pstmt.setString(10, LoanNumber);
-		pstmt.setString(11, TaxPayer);
-		
-		pstmt.execute();
-		pstmt.close();
-		this.disconnect();
-	}
-	
-	// put the relevant DAO methods here..
-	
-	
-	public void registernewuserdao (String userid, String username, String userpassword) throws SQLException,ClassNotFoundException {
-		String sql = "insert into sukanya.userinfo values(?,?,?)";
-		this.connect(); 
-		PreparedStatement pstmt = this.jdbcConnection.prepareStatement(sql);
-		pstmt.setString(1, userid);
-		pstmt.setString(2, username);
-		pstmt.setString(3, userpassword);
-		
-		pstmt.execute();
-		pstmt.close();
-		this.disconnect();	
-				
-	}
 	
 	
 	

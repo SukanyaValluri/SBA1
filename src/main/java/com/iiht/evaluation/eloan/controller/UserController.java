@@ -1,9 +1,7 @@
 package com.iiht.evaluation.eloan.controller;
 
 import java.io.IOException;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -16,10 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.iiht.evaluation.eloan.dao.ConnectionDao;
-import com.iiht.evaluation.eloan.model.ApprovedLoan;
 import com.iiht.evaluation.eloan.model.LoanInfo;
-import com.iiht.evaluation.eloan.model.User;
-import com.mysql.cj.xdevapi.Statement;
+import com.iiht.evaluation.eloan.model.LoanInfoDisplay;
 
 
 
@@ -32,23 +28,26 @@ private ConnectionDao connDao;
 	public void setConnDao(ConnectionDao connDao) {
 		this.connDao = connDao;
 	}
+	@SuppressWarnings("rawtypes")
 	public void init(ServletConfig config) {
 		String jdbcURL = config.getServletContext().getInitParameter("jdbcUrl");
 		String jdbcUsername = config.getServletContext().getInitParameter("jdbcUsername");
 		String jdbcPassword = config.getServletContext().getInitParameter("jdbcPassword");
-		System.out.println(jdbcURL + jdbcUsername + jdbcPassword);
 		this.connDao = new ConnectionDao(jdbcURL, jdbcUsername, jdbcPassword);
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		doGet(request, response);
+		
 	}
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String action = request.getParameter("action");
 		
+		
+	
 		String viewName = "";
 		try {
 			switch (action) {
@@ -98,13 +97,42 @@ private ConnectionDao connDao;
 	private String validate(HttpServletRequest request, HttpServletResponse response) throws SQLException {
 		/* write the code to validate the user */
 		
-		return null;
+		return "userhome1.jsp";
 	}
-	private String placeloan(HttpServletRequest request, HttpServletResponse response) {
+	
+	
+	
+	private  String placeloan(HttpServletRequest request, HttpServletResponse response) throws Exception, SQLException {
 		// TODO Auto-generated method stub
-	/* write the code to place the loan information */
+		//public  addLoan(String LoanName, String ApplicationNumber, String loanAmount, String ApplicationDate, String BusinessStructure, String BillingIndicator, String ContactAddress, String ContactNumber, String status, String email, String TaxPayer) throws SQLException,ClassNotFoundException {
 		
-		return null;
+		try {
+		
+		String ApplicationNumber=request.getParameter("ApplicationNumber");
+		String LoanName = request.getParameter("LoanName");
+		String LoanAmount=request.getParameter("LoanAmount");
+		String ApplicationDate = request.getParameter("ApplicationDate");
+		String BusinessStructure=request.getParameter("BusinessStructure");
+		String BillingIndicator=request.getParameter("BillingIndicator");
+		String Taxpayer=request.getParameter("Taxpayer");
+		String ContactAddress=request.getParameter("ContactAddress");
+		String ContactNumber=request.getParameter("ContactNumber");
+		//String status=request.getParameter("status");
+		String Email=request.getParameter("Email");
+		String LoanNumber = request.getParameter("LoanNumber");
+		
+		this.connDao.addLoan(ApplicationNumber,LoanName, LoanAmount, ApplicationDate, BusinessStructure, BillingIndicator, ContactAddress, ContactNumber,Email,LoanNumber,Taxpayer);
+		 
+		
+		return "listall.jsp";
+		} catch (ClassNotFoundException e) {
+			// TODO: handle exception
+			throw new ClassNotFoundException(e.getMessage());
+		} catch (SQLException e) {
+			// TODO: handle exception
+			throw new SQLException(e.getMessage());
+		}
+		
 	}
 	private String application1(HttpServletRequest request, HttpServletResponse response) {
 		// TODO Auto-generated method stub
@@ -121,15 +149,32 @@ private ConnectionDao connDao;
 	private String registerUser(HttpServletRequest request, HttpServletResponse response) throws SQLException {
 		// TODO Auto-generated method stub
 		/* write the code to redirect page to read the user details */
-		return "newuserui.jsp";
+		return null;
 	}
-	private String registernewuser(HttpServletRequest request, HttpServletResponse response) throws SQLException {
+	private String registernewuser(HttpServletRequest request, HttpServletResponse response) throws SQLException, ClassNotFoundException {
 		// TODO Auto-generated method stub
 		/* write the code to create the new user account read from user 
 		   and return to index page */
 		
-		return null;
+		try {
+			String userid = request.getParameter("userid");
+			String username = request.getParameter("username");
+			String userpassword = request.getParameter("userpassword");
+			this.connDao.registernewuserdao(userid, username, userpassword);
+			//List<ProductMaster> products = this.productMasterDao.getProductRecords();
+				// put data into request object (to share with view page)
+				//request.setAttribute("products", products);
+				return "index.jsp";
+			
+		} catch (ClassNotFoundException e) {
+			// TODO: handle exception
+			throw new ClassNotFoundException(e.getMessage());
+		} catch (SQLException e) {
+			// TODO: handle exception
+			throw new SQLException(e.getMessage());
+		}
 	}
+
 	
 	private String register(HttpServletRequest request, HttpServletResponse response) {
 		// TODO Auto-generated method stub
@@ -137,13 +182,25 @@ private ConnectionDao connDao;
 		
 		return null;
 	}
-	private String displaystatus(HttpServletRequest request, HttpServletResponse response) throws SQLException {
+	private String displaystatus(HttpServletRequest request, HttpServletResponse response) throws SQLException, ClassNotFoundException {
 		// TODO Auto-generated method stub
 		/* write the code the display the loan status based on the given application
 		   number 
 		*/
-		
-		return null;
+		try {
+			
+			List<LoanInfoDisplay> loandetails = this.connDao.getLoanRecords();
+					// put data into request object (to share with view page)
+					request.setAttribute("LoanDetails", loandetails);
+					return null;
+				
+			} catch (ClassNotFoundException e) {
+				// TODO: handle exception
+				throw new ClassNotFoundException(e.getMessage());
+			} catch (SQLException e) {
+				// TODO: handle exception
+				throw new SQLException(e.getMessage());
+			}
 	}
 
 	private String editloan(HttpServletRequest request, HttpServletResponse response) {
@@ -162,6 +219,8 @@ private ConnectionDao connDao;
 	private String application(HttpServletRequest request, HttpServletResponse response) {
 		// TODO Auto-generated method stub
 	/* write a code to return to trackloan page */
+		
+		
 		return null;
 	}
 }
